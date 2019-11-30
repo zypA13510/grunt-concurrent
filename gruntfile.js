@@ -58,6 +58,34 @@ module.exports = grunt => {
 			},
 			indentDefault: [
 				'testIndent'
+			],
+			categorizeOutputTrue: {
+				options: {
+					categorizeOutput: true
+				},
+				tasks: [
+					'testCategorizeOutput'
+				]
+			},
+			categorizeOutputFalse: {
+				options: {
+					categorizeOutput: false
+				},
+				tasks: [
+					'testCategorizeOutput'
+				]
+			},
+			categorizeOutputFalseConcurrentOutput: {
+				options: {
+					logConcurrentOutput: true,
+					categorizeOutput: false
+				},
+				tasks: [
+					'testCategorizeOutput'
+				]
+			},
+			categorizeOutputDefault: [
+				'testCategorizeOutput'
 			]
 		},
 		simplemocha: {
@@ -151,6 +179,10 @@ module.exports = grunt => {
 
 	grunt.registerTask('testIndent', () => {
 		console.log('indent test output');
+	});
+
+	grunt.registerTask('testCategorizeOutput', () => {
+		console.log('categorize test output');
 	});
 
 	grunt.registerTask('default', [

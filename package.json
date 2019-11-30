@@ -33,8 +33,10 @@
 	"dependencies": {
 		"arrify": "^2.0.1",
 		"async": "^3.1.0",
+		"chalk-compose-logs": "^1.0.0",
 		"indent-string": "^4.0.0",
-		"pad-stream": "^2.0.0"
+		"pad-stream": "^2.0.0",
+		"prepend-transform": "^0.0.1019"
 	},
 	"devDependencies": {
 		"cross-spawn": "^6.0.5",

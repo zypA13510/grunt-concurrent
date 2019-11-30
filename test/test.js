@@ -6,6 +6,7 @@ const path = require('path');
 const {exec} = require('child_process');
 const pathExists = require('path-exists');
 const spawn = require('cross-spawn');
+const chalkComposeLogs = require('chalk-compose-logs');
 
 describe('concurrent', () => {
 	it('runs grunt tasks successfully', () => {
@@ -103,5 +104,10 @@ describe('concurrent', () => {
 				done();
 			});
 		});
+	});
+
+	describe('`categorizeOutput` option', () => {
+		const testOutput = 'categorize test output';
+		const categorizedTestOutput = '[]' + testOutput;
 	});
 });

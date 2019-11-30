@@ -4,6 +4,8 @@ const padStream = require('pad-stream');
 const async = require('async');
 const arrify = require('arrify');
 const indentString = require('indent-string');
+const prependTransform = require('prepend-transform');
+const chalkComposeLogs = require('chalk-compose-logs');
 
 const subprocesses = [];
 
@@ -35,7 +37,7 @@ module.exports = grunt => {
 			);
 		}
 
-		async.eachLimit(tasks, options.limit, (task, next) => {
+		async.eachOfLimit(tasks, options.limit, (task, index, next) => {
 			const subprocess = grunt.util.spawn({
 				grunt: true,
 				args: arrify(task).concat(flags),
@@ -49,6 +51,10 @@ module.exports = grunt => {
 			}, (error, result) => {
 				if (!options.logConcurrentOutput) {
 					let output = result.stdout + result.stderr;
+					if (options.categorizeOutput) {
+						output = output.replace(/^/gm, chalkComposeLogs(`[${task}]`, index));
+					}
+
 					if (options.indent) {
 						output = indentString(output, 4);
 					}
@@ -62,6 +68,11 @@ module.exports = grunt => {
 			if (options.logConcurrentOutput) {
 				let subStdout = subprocess.stdout;
 				let subStderr = subprocess.stderr;
+				if (options.categorizeOutput) {
+					subStdout = subStdout.pipe(prependTransform(chalkComposeLogs(`[${task}]`, index)));
+					subStderr = subStderr.pipe(prependTransform(chalkComposeLogs(`[${task}]`, index)));
+				}
+
 				if (options.indent) {
 					subStdout = subStdout.pipe(padStream(4));
 					subStderr = subStderr.pipe(padStream(4));
